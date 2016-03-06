@@ -1,0 +1,16 @@
+[
+{
+  "modid": "PartyTag",
+  "name": "PartyTag",
+  "description": "Puts tags above your party members' heads. I have not tested for compatibility issues with other mods modifying the tag above one's nametag.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://maxkorlaar.com",
+  "updateUrl": "",
+  "authorList": ["Max Korlaar"],
+  "credits": "Hypixel Network for the great party system, @VladToBeHere for his great tutorial and example code on rendering the tags.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
