@@ -27,6 +27,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -169,9 +170,9 @@ public class PartyTag {
             }
         } else if (chatMessage.startsWith("You are not in a party") || chatMessage.startsWith("The party was disbanded") || chatMessage.startsWith("You have been kicked from the party")) {
             clearParty();
-        } else if (chatMessage.contains("has disbanded the party!") && !chatMessage.contains(": ")) {
+        } else if (chatMessage.contains("has disbanded the party!") && !ChatTools.isSentByPlayer(chatMessage)) {
             clearParty();
-        } else if (chatMessage.contains("joined the party!") && !chatMessage.contains(": ")) {
+        } else if (chatMessage.contains("joined the party!") && !ChatTools.isSentByPlayer(chatMessage)) {
             updates = 0;
             updateMembers();
         }
