@@ -27,7 +27,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -40,7 +39,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.apache.logging.log4j.Logger;
 
-import javax.xml.bind.DatatypeConverter;
 import java.util.*;
 
 /**
@@ -126,7 +124,8 @@ public class PartyTag {
     }
 
     protected void updateMembers() {
-        if (updates >= 1) {
+        if (updates >= 1) { // Only request it once per 60 seconds - This can be configured to be higher, but since we're checking for party stuff
+            // it shouldn't be needed to be higher. You can always type /p list manually if desired.
             waitUntil = System.currentTimeMillis() + 60 * 1000;
             return;
         }
@@ -152,7 +151,7 @@ public class PartyTag {
             if (brokenMessage.length == 2) {
                 clearParty();
                 // 0: Party members (i):
-                // 1: [HELPER] oznek98, [MVP+] MaxKorlaar, [HELPER] DirtyShooter
+                // 1: [HELPER] oznek98, [MVP+] MaxKorlaar, [BELGIAN] DirtyShooter
                 String rawMembers[] = brokenMessage[1].split(",");
                 for (String rawMemberString : rawMembers) {
                     // Get rid of the rank tag

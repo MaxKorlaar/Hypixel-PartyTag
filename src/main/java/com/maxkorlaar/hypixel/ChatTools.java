@@ -25,6 +25,8 @@ package com.maxkorlaar.hypixel;
 
 /**
  * Created by Max Korlaar on 06-03-16.
+ * @author Max Korlaar
+ * @version 0.1.0
  */
 public class ChatTools {
     public static boolean isSentByPlayer(String message) {
