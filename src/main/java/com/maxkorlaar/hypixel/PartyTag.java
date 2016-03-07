@@ -57,7 +57,7 @@ import java.util.*;
 @Mod(modid = PartyTag.MODID, version = PartyTag.VERSION)
 public class PartyTag {
     public static final String MODID = "PartyTag";
-    public static final String VERSION = "1.1.2";
+    public static final String VERSION = "1.2.0";
     private static Collection<String> partyMembers = new ArrayList<String>();
     public static Map<UUID, String> stringCache = new HashMap<java.util.UUID, String>();
     long waitUntil = System.currentTimeMillis();
@@ -68,6 +68,7 @@ public class PartyTag {
     private int displayColor = 0;
     private int tickCount = 0;
     private String logPrefix = "[PartyTag v" + VERSION + "] ";
+    private String leaderName;
 
     @EventHandler
     public void init(FMLPreInitializationEvent event) {
@@ -106,18 +107,31 @@ public class PartyTag {
 
 
             if (partyMembers == null || partyMembers.isEmpty()) return;
-
             for (EntityPlayer entityPlayer : mc.theWorld.playerEntities) {
                 final String name = entityPlayer.getName();
+
                 if (partyMembers.contains(name)) {
+                    boolean isLeader = false;
+                    if (name.equals(leaderName)) isLeader = true;
                     // This spams since it would get activated on every freaking tick: logger.info("[PARTY] Bingo! " + name + " is in your current world and in your party!");
                     EnumChatFormatting color;
                     if (displayColor == 0) {
                         color = EnumChatFormatting.BLUE;
                     } else {
-                        color = EnumChatFormatting.YELLOW;
+                        if (isLeader) {
+                            color = EnumChatFormatting.RED;
+                        } else {
+                            color = EnumChatFormatting.YELLOW;
+                        }
                     }
-                    stringCache.put(entityPlayer.getUniqueID(), "" + color + name + " is in your party!");
+                    // The first party member is always the party leader, as it turns out.
+                    String displayMessage;
+                    if (isLeader) {
+                        displayMessage = "" + color + name + " is your party leader!";
+                    } else {
+                        displayMessage = "" + color + name + " is in your party!";
+                    }
+                    stringCache.put(entityPlayer.getUniqueID(), displayMessage);
                 }
             }
         }
@@ -153,7 +167,9 @@ public class PartyTag {
                 // 0: Party members (i):
                 // 1: [HELPER] oznek98, [MVP+] MaxKorlaar, [BELGIAN] DirtyShooter
                 String rawMembers[] = brokenMessage[1].split(",");
+                int i = 0;
                 for (String rawMemberString : rawMembers) {
+                    i++;
                     // Get rid of the rank tag
                     String rawMemberStringTrimmed = rawMemberString.trim();
                     String memberName;
@@ -164,6 +180,7 @@ public class PartyTag {
                         memberName = rawMemberStringTrimmed;
                     }
                     partyMembers.add(memberName);
+                    if (i == 1) leaderName = memberName;
                     logger.info(logPrefix + "Found party member: " + memberName);
                     // todo mark the first player as the party leader, changing the message above their head as well
                     // (The first player in the list is always the leader)
