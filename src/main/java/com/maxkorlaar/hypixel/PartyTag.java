@@ -190,7 +190,7 @@ public class PartyTag {
             clearParty();
         } else if (chatMessage.contains("has disbanded the party!") && !ChatTools.isSentByPlayer(chatMessage)) {
             clearParty();
-        } else if (chatMessage.contains("joined the party!") && !ChatTools.isSentByPlayer(chatMessage) || chatMessage.contains("left the party") && !ChatTools.isSentByPlayer(chatMessage)) {
+        } else if (chatMessage.contains("joined the party!") && !ChatTools.isSentByPlayer(chatMessage) || chatMessage.contains("left the party") && !ChatTools.isSentByPlayer(chatMessage) || chatMessage.contains("has promoted") && !ChatTools.isSentByPlayer(chatMessage)) {
             updates = 0;
             updateMembers();
         }
