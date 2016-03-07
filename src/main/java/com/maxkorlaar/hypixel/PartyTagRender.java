@@ -39,7 +39,7 @@ import org.lwjgl.opengl.GL11;
 /**
  * So basically this class renders the actual text above one of your party members' (or anyone else in the stringCache HashMap – A HashMap is some sort of mapped array) nametags
  * I would never have figured this out on my own so I'm going to give @VladToBeHere/codename_B credit right here:
- * @credit https://github.com/codename-B/Facepixel/blob/master/src/main/java/de/bananaco/FacepixelRender.java
+ * @credit Class by codename_B: https://github.com/codename-B/Facepixel/blob/master/src/main/java/de/bananaco/FacepixelRender.java
  * I'm going to try and add some comments. It will hopefully help me (and you?) figure out what everything means, so we can learn from it. Yay, learning!
  */
 

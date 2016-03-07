@@ -57,7 +57,7 @@ import java.util.*;
 @Mod(modid = PartyTag.MODID, version = PartyTag.VERSION)
 public class PartyTag {
     public static final String MODID = "PartyTag";
-    public static final String VERSION = "1.1.1";
+    public static final String VERSION = "1.1.2";
     private static Collection<String> partyMembers = new ArrayList<String>();
     public static Map<UUID, String> stringCache = new HashMap<java.util.UUID, String>();
     long waitUntil = System.currentTimeMillis();
@@ -110,7 +110,7 @@ public class PartyTag {
             for (EntityPlayer entityPlayer : mc.theWorld.playerEntities) {
                 final String name = entityPlayer.getName();
                 if (partyMembers.contains(name)) {
-                    // SPAMS: logger.info("[PARTY] Bingo! " + name + " is in your current world and in your party!");
+                    // This spams since it would get activated on every freaking tick: logger.info("[PARTY] Bingo! " + name + " is in your current world and in your party!");
                     EnumChatFormatting color;
                     if (displayColor == 0) {
                         color = EnumChatFormatting.BLUE;
@@ -165,13 +165,15 @@ public class PartyTag {
                     }
                     partyMembers.add(memberName);
                     logger.info(logPrefix + "Found party member: " + memberName);
+                    // todo mark the first player as the party leader, changing the message above their head as well
+                    // (The first player in the list is always the leader)
                 }
             }
         } else if (chatMessage.startsWith("You are not in a party") || chatMessage.startsWith("The party was disbanded") || chatMessage.startsWith("You have been kicked from the party")) {
             clearParty();
         } else if (chatMessage.contains("has disbanded the party!") && !ChatTools.isSentByPlayer(chatMessage)) {
             clearParty();
-        } else if (chatMessage.contains("joined the party!") && !ChatTools.isSentByPlayer(chatMessage)) {
+        } else if (chatMessage.contains("joined the party!") && !ChatTools.isSentByPlayer(chatMessage) || chatMessage.contains("left the party") && !ChatTools.isSentByPlayer(chatMessage)) {
             updates = 0;
             updateMembers();
         }
