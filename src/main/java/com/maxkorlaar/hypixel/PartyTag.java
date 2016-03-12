@@ -39,7 +39,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Max Korlaar on 05-03-16.
@@ -57,7 +61,7 @@ import java.util.*;
 @Mod(modid = PartyTag.MODID, version = PartyTag.VERSION)
 public class PartyTag {
     public static final String MODID = "PartyTag";
-    public static final String VERSION = "1.2.0";
+    public static final String VERSION = "1.2.1";
     private static Collection<String> partyMembers = new ArrayList<String>();
     public static Map<UUID, String> stringCache = new HashMap<java.util.UUID, String>();
     long waitUntil = System.currentTimeMillis();
@@ -165,7 +169,7 @@ public class PartyTag {
             if (brokenMessage.length == 2) {
                 clearParty();
                 // 0: Party members (i):
-                // 1: [HELPER] oznek98, [MVP+] MaxKorlaar, [BELGIAN] DirtyShooter
+                // 1: [ADMIN] AgentKid, [MOD] Alexmaster, [HELPER] oznek98, [MVP+] MaxKorlaar, [BELGIAN] DirtyShooter, [DÖNER] lilablassblue, [PURPLE] Rhune
                 String rawMembers[] = brokenMessage[1].split(",");
                 int i = 0;
                 for (String rawMemberString : rawMembers) {
@@ -182,15 +186,16 @@ public class PartyTag {
                     partyMembers.add(memberName);
                     if (i == 1) leaderName = memberName;
                     logger.info(logPrefix + "Found party member: " + memberName);
-                    // todo mark the first player as the party leader, changing the message above their head as well
-                    // (The first player in the list is always the leader)
                 }
             }
         } else if (chatMessage.startsWith("You are not in a party") || chatMessage.startsWith("The party was disbanded") || chatMessage.startsWith("You have been kicked from the party")) {
             clearParty();
         } else if (chatMessage.contains("has disbanded the party!") && !ChatTools.isSentByPlayer(chatMessage)) {
             clearParty();
-        } else if (chatMessage.contains("joined the party!") && !ChatTools.isSentByPlayer(chatMessage) || chatMessage.contains("left the party") && !ChatTools.isSentByPlayer(chatMessage) || chatMessage.contains("has promoted") && !ChatTools.isSentByPlayer(chatMessage)) {
+        } else if (chatMessage.contains("joined the party!") && !ChatTools.isSentByPlayer(chatMessage) ||
+                chatMessage.contains("left the party") && !ChatTools.isSentByPlayer(chatMessage) ||
+                chatMessage.contains("has promoted") && !ChatTools.isSentByPlayer(chatMessage) ||
+                chatMessage.startsWith("You joined") && chatMessage.endsWith("party!")) {
             updates = 0;
             updateMembers();
         }
